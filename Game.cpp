@@ -1,5 +1,5 @@
 #include "Game.h"
-
+#include "SDL_image.h"
 //전달받은 인자를 이용하여 Window, Renderer 생성
 //각종 초기화, 그리기 색 지정
 bool Game::init(const char* title, int xpos, int ypos,
@@ -18,7 +18,7 @@ bool Game::init(const char* title, int xpos, int ypos,
 
       if(m_pRenderer != 0)
       {
-        SDL_SetRenderDrawColor(m_pRenderer, 255, 255, 255, 255);
+        SDL_SetRenderDrawColor(m_pRenderer, 255, 0, 0, 255);
       } else{
         return false;
       }
@@ -29,7 +29,7 @@ bool Game::init(const char* title, int xpos, int ypos,
     return false;
   }
   //Texture 생성
-  SDL_Surface* pTempSurface = SDL_LoadBMP("Assets/animate.bmp");
+  SDL_Surface* pTempSurface = IMG_Load("Assets/animate.png");
 
   m_pTexture = SDL_CreateTextureFromSurface(m_pRenderer, pTempSurface);
 
@@ -39,7 +39,6 @@ bool Game::init(const char* title, int xpos, int ypos,
   // SDL_QueryTexture 함수를 이용하여 Texture의 크기 구하기
   SDL_QueryTexture(m_pTexture, NULL, NULL,
     &m_sourceRectangle.w, &m_sourceRectangle.h); // Texture의 크기로 원본상자의 너비, 높이 값 설정
-
   m_sourceRectangle.w /= 8;  
 
   m_sourceRectangle.x = 0;
