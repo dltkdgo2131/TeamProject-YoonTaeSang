@@ -29,26 +29,7 @@ bool Game::init(const char* title, int xpos, int ypos,
     return false;
   }
   //Texture 생성
-  SDL_Surface* pTempSurface = IMG_Load("Assets/animate.png");
-
-  m_pTexture = SDL_CreateTextureFromSurface(m_pRenderer, pTempSurface);
-
-  SDL_FreeSurface(pTempSurface);
-
-  //원본상자의 너비/높이 설정
-  // SDL_QueryTexture 함수를 이용하여 Texture의 크기 구하기
-  SDL_QueryTexture(m_pTexture, NULL, NULL,
-    &m_sourceRectangle.w, &m_sourceRectangle.h); // Texture의 크기로 원본상자의 너비, 높이 값 설정
-  m_sourceRectangle.w /= 8;  
-
-  m_sourceRectangle.x = 0;
-  m_sourceRectangle.y = 0;
-
-  m_destinationRactangle.w = m_sourceRectangle.w;
-  m_destinationRactangle.h = m_sourceRectangle.h;
-
-  m_destinationRactangle.x = 0;
-  m_destinationRactangle.y = 0;
+  m_textureManager.load("Assets/animate.png", "animate", m_pRenderer);
   
   m_bRunning = true;
   return true;
@@ -56,7 +37,7 @@ bool Game::init(const char* title, int xpos, int ypos,
 
 void Game::update()
 {
-  m_sourceRectangle.x = m_sourceRectangle.w  * ((SDL_GetTicks() / 100) % 8);
+  m_currentFrame = ((SDL_GetTicks() / 100) % 8);
 }
 
 void Game::render()
@@ -72,7 +53,10 @@ void Game::render()
   // 화면을 지우고/SDL_RenderClear, 그리는 것/SDL_RenderCopy은 backbuffer에서 수행
   // 스크린 화면에 바로 반영되지 않음
   // SDL_RenderPresent를 호출하면 backbuffer에 그려진 최종 결과물을 화면에 게시
-  SDL_RenderCopy(m_pRenderer, m_pTexture, &m_sourceRectangle, &m_destinationRactangle);
+  //SDL_RenderCopy(m_pRenderer, m_pTexture, &//m_sourceRectangle, &m_destinationRactangle);
+
+  m_textureManager.draw("animate", 0, 0, 75, 132, m_pRenderer);
+  m_textureManager.drawFrame("animate", 100, 100, 75, 132, 0 ,m_currentFrame, m_pRenderer);
   
   SDL_RenderPresent(m_pRenderer); // 이전 호출 이후 수행된 렌더링으로 화면 갱신 (더블버퍼링)
 
