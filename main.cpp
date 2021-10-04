@@ -17,6 +17,7 @@ int main(int argc, char* args[])
       g_pRenderer = SDL_CreateRenderer(g_pWindow, -1, 0);
     }
   }
+  
   SDL_SetRenderDrawColor(g_pRenderer, 0, 0, 0, 255);
   SDL_RenderClear(g_pRenderer);
   SDL_RenderPresent(g_pRenderer);
