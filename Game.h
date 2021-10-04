@@ -1,16 +1,17 @@
 #pragma once
 #include "SDL.h"
 
-Class Game
+class Game
 {
 public:
   Game() {}
   ~Game() {}
 
-  bool init();
+  bool init(const char* title, int xpos, int ypos,
+ int height, int width, int flag) ;
   void render();
   void update();
-  void running();
+  bool running();
   void handleEvents();
   void clean();
 
@@ -18,4 +19,4 @@ private:
   SDL_Window* m_pWindow;
   SDL_Renderer* m_pRenderer;
   bool m_bRunning;
-}
+};

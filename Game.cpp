@@ -44,7 +44,7 @@ void Game::render()
   SDL_RenderPresent(m_pRenderer); // 이전 호출 이후 수행된 렌더링으로 화면 갱신 (더블버퍼링)
 }
 
-void Game::running()
+bool Game::running()
 {
   return m_bRunning;
 }
@@ -71,5 +71,5 @@ void Game::clean()
 {
   SDL_DestroyWindow(m_pWindow); //윈도우 삭제
   SDL_DestroyRenderer(m_pRenderer); //렌더러 삭제
-  SDL_QUIT(); //SDL 서브 시스템 종료
+  SDL_Quit(); //SDL 서브 시스템 종료
 }
