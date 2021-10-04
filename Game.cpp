@@ -29,7 +29,7 @@ bool Game::init(const char* title, int xpos, int ypos,
     return false;
   }
   //Texture 생성
-  SDL_Surface* pTempSurface = SDL_LoadBMP("Assets/rider.bmp");
+  SDL_Surface* pTempSurface = SDL_LoadBMP("Assets/animate.bmp");
 
   m_pTexture = SDL_CreateTextureFromSurface(m_pRenderer, pTempSurface);
 
@@ -39,11 +39,14 @@ bool Game::init(const char* title, int xpos, int ypos,
   // SDL_QueryTexture 함수를 이용하여 Texture의 크기 구하기
   SDL_QueryTexture(m_pTexture, NULL, NULL,
     &m_sourceRectangle.w, &m_sourceRectangle.h); // Texture의 크기로 원본상자의 너비, 높이 값 설정
-  m_sourceRectangle.x = -50;
-  m_sourceRectangle.y = -50;
 
-  m_destinationRactangle.w = 50;
-  m_destinationRactangle.h = 50;
+  m_sourceRectangle.w /= 8;  
+
+  m_sourceRectangle.x = 0;
+  m_sourceRectangle.y = 0;
+
+  m_destinationRactangle.w = m_sourceRectangle.w;
+  m_destinationRactangle.h = m_sourceRectangle.h;
 
   m_destinationRactangle.x = 0;
   m_destinationRactangle.y = 0;
@@ -54,7 +57,7 @@ bool Game::init(const char* title, int xpos, int ypos,
 
 void Game::update()
 {
-
+  m_sourceRectangle.x = m_sourceRectangle.w  * ((SDL_GetTicks() / 100) % 8);
 }
 
 void Game::render()
