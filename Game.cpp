@@ -29,7 +29,10 @@ bool Game::init(const char* title, int xpos, int ypos,
     return false;
   }
   //Texture 생성
-  m_textureManager.load("Assets/animate.png", "animate", m_pRenderer);
+  if(!TheTextureManager::Instance()->load("Assets/animate.png", "animate", m_pRenderer))
+  {
+    return false;
+  }
   
   m_bRunning = true;
   return true;
@@ -55,8 +58,8 @@ void Game::render()
   // SDL_RenderPresent를 호출하면 backbuffer에 그려진 최종 결과물을 화면에 게시
   //SDL_RenderCopy(m_pRenderer, m_pTexture, &//m_sourceRectangle, &m_destinationRactangle);
 
-  m_textureManager.draw("animate", 0, 0, 75, 132, m_pRenderer);
-  m_textureManager.drawFrame("animate", 100, 100, 75, 132, 0 ,m_currentFrame, m_pRenderer);
+  TheTextureManager::Instance()->draw("animate", 0, 0, 75, 132, m_pRenderer);
+  TheTextureManager::Instance()->drawFrame("animate", 100, 100, 75, 132, 0 ,m_currentFrame, m_pRenderer);
   
   SDL_RenderPresent(m_pRenderer); // 이전 호출 이후 수행된 렌더링으로 화면 갱신 (더블버퍼링)
 
