@@ -1,7 +1,8 @@
 #pragma once
 #include "SDL.h"
 #include "TextureManager.h"
-
+#include "GameObject.h"
+#include "Player.h"
 class Game
 {
 public:
@@ -21,4 +22,8 @@ private:
   SDL_Renderer* m_pRenderer;
   bool m_bRunning;
   int m_currentFrame;
+
+//게임 오브젝트 생성
+  GameObject m_go;
+  Player m_player;
 };

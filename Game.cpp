@@ -5,6 +5,7 @@
 bool Game::init(const char* title, int xpos, int ypos,
  int height, int width, int flag) 
 {
+  // Window, Rednerer 생성
   if(SDL_Init(SDL_INIT_EVERYTHING) >= 0)
   {
     m_pWindow = SDL_CreateWindow( title, 
@@ -28,11 +29,15 @@ bool Game::init(const char* title, int xpos, int ypos,
   } else{
     return false;
   }
-  //Texture 생성
+  //Texture 불러오기
   if(!TheTextureManager::Instance()->load("Assets/animate.png", "animate", m_pRenderer))
   {
     return false;
   }
+
+  // 각 객체에 텍스쳐 불러오기
+  m_go.load(100, 100, 75, 132, "animate");
+  m_player.load(300, 300, 75, 132, "animate");
   
   m_bRunning = true;
   return true;
@@ -40,26 +45,16 @@ bool Game::init(const char* title, int xpos, int ypos,
 
 void Game::update()
 {
-  m_currentFrame = ((SDL_GetTicks() / 100) % 8);
+  m_go.update();
+  m_player.update();
 }
 
 void Game::render()
 {
   SDL_RenderClear(m_pRenderer); // 지정된 색으로 윈도우 지우기
   
-  // 텍스쳐의 일부 영역을 Render의 일부 영역에 복사
-  // 원본상자(m_sourceRectangle)의 픽셀을 대상상자(m_destinationRactangle)의 영역으로 복사
-  // m_sourceRectangle: Texture의 일부 영역 정의
-  // m_destinationRactangle: Redner의 일부 영역 정의
-
-  // SDL_RenderClear()와 SDL_RenderPresent() 사이에 SDL_RenderCopy() 호출 추가
-  // 화면을 지우고/SDL_RenderClear, 그리는 것/SDL_RenderCopy은 backbuffer에서 수행
-  // 스크린 화면에 바로 반영되지 않음
-  // SDL_RenderPresent를 호출하면 backbuffer에 그려진 최종 결과물을 화면에 게시
-  //SDL_RenderCopy(m_pRenderer, m_pTexture, &//m_sourceRectangle, &m_destinationRactangle);
-
-  TheTextureManager::Instance()->draw("animate", 0, 0, 75, 132, m_pRenderer);
-  TheTextureManager::Instance()->drawFrame("animate", 100, 100, 75, 132, 0 ,m_currentFrame, m_pRenderer);
+  m_go.draw(m_pRenderer);
+  m_player.draw(m_pRenderer);
   
   SDL_RenderPresent(m_pRenderer); // 이전 호출 이후 수행된 렌더링으로 화면 갱신 (더블버퍼링)
 

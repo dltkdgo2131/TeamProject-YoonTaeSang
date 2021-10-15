@@ -2,6 +2,7 @@
 #include "SDL_image.h"
 
 TextureManager* TextureManager::s_pInstance = 0;
+// 텍스쳐 로드
 bool TextureManager::load(string fileName, string id, SDL_Renderer* pRenderer)
 {
   SDL_Surface* pTempSurface = IMG_Load(fileName.c_str());
@@ -16,6 +17,7 @@ bool TextureManager::load(string fileName, string id, SDL_Renderer* pRenderer)
   return false;
 }
 
+// 텍스쳐 출력
 void TextureManager::draw(string id, int x, int y, int width, int height, SDL_Renderer* pRenderer, SDL_RendererFlip flip)
 {
   SDL_Rect srcRect;
@@ -31,6 +33,7 @@ void TextureManager::draw(string id, int x, int y, int width, int height, SDL_Re
   SDL_RenderCopyEx(pRenderer, m_textureMap[id], &srcRect, &destRect, 0, 0, flip);
 }
 
+// 텍스쳐 애니메이션
 void TextureManager::drawFrame(string id, int x, int y, int width, int height, int currentRow, int currentFrame,
   SDL_Renderer* pRenderer, SDL_RendererFlip flip)
 {
