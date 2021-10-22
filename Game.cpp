@@ -1,5 +1,7 @@
 #include "Game.h"
 #include "SDL_image.h"
+
+Game* Game::s_pInstance = 0;
 //전달받은 인자를 이용하여 Window, Renderer 생성
 //각종 초기화, 그리기 색 지정
 bool Game::init(const char* title, int xpos, int ypos,
@@ -36,8 +38,8 @@ bool Game::init(const char* title, int xpos, int ypos,
   }
 
   // 각 객체에 텍스쳐 불러오기
-  m_go.load(100, 100, 75, 132, "animate");
-  m_player.load(300, 300, 75, 132, "animate");
+  m_gameObjects.push_back( new Player( new LoaderParams(100, 100, 75, 132, "animate")));
+  m_gameObjects.push_back( new Enemy( new LoaderParams(300, 300, 75, 132, "animate")));
   
   m_bRunning = true;
   return true;
@@ -45,16 +47,20 @@ bool Game::init(const char* title, int xpos, int ypos,
 
 void Game::update()
 {
-  m_go.update();
-  m_player.update();
+   for(int i = 0; i < m_gameObjects.size(); i++)
+  {
+    m_gameObjects[i]->update();
+  }
 }
 
 void Game::render()
 {
   SDL_RenderClear(m_pRenderer); // 지정된 색으로 윈도우 지우기
   
-  m_go.draw(m_pRenderer);
-  m_player.draw(m_pRenderer);
+  for(int i = 0; i < m_gameObjects.size(); i++)
+  {
+    m_gameObjects[i]->draw();
+  }
   
   SDL_RenderPresent(m_pRenderer); // 이전 호출 이후 수행된 렌더링으로 화면 갱신 (더블버퍼링)
 
